@@ -28,12 +28,12 @@ class AuthController extends Controller
         $result = User::insert($data);
 
         if($result){
-            return redirect('/register')->with('register', 'You have successfully Register a Account.');
+            return response()->json(['Error' => '0', 'Message' => 'You have successfully Register a Account.']);
         }
 
     }
     public function login(Request $request){
-        
+
         $validator = Validator::make($request->all(), [
             'username' => 'required|string',
             'password' => 'required|string',

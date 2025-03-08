@@ -1,63 +1,139 @@
-*{
+/* Universal Reset */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.container{
+/* Container and Box Layout */
+.container {
     display: flex;
     justify-content: center;
     margin-top: 100px;
 }
-.box{
+
+.box {
     border: 1px solid #333;
     width: 400px;
     height: auto;
 }
 
-.textbox{
+/* Form Elements */
+.textbox {
     display: flex;
     flex-direction: column;
     margin: 30px 50px;
 }
 
-.textbox .textbox_input{
+.textbox_input {
     margin-top: 20px;
     width: 100%;
     height: 40px;
     border-radius: 14px;
     padding: 10px;
+    color: #333;
+    font-size: 1em;
 }
 
-.title h1{
+.textbox_input[type="submit"] {
+    background: blue;
+    color: #fff;
+    cursor: pointer;
+}
+
+.textbox_input[type="submit"]:hover {
+    background: darkblue;
+}
+
+/* Title */
+.title h1 {
     display: flex;
     justify-content: center;
     margin-top: 50px;
     font-size: 2.5rem;
 }
-.footer{
+
+/* Footer and Social Section */
+.footer {
     display: flex;
     justify-content: center;
 }
-.socials{
+
+.socials {
     display: flex;
     justify-content: center;
     margin-top: 30px;
     margin-bottom: 20px;
     gap: 10px;
-
 }
 
-.social-box{
+.social-box {
     width: 40px;
     height: 40px;
 }
-.social-box i{
+
+.social-box i {
     font-size: 40px;
 }
 
-.register{
+.social-box a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.social-box .bx {
+    color: blue;
+    font-size: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Social Media Buttons */
+.social-box a:hover .bx.bxl-facebook-circle {
+    background: blue;
+    color: #fff;
+}
+
+.social-box a:hover .bx.bxl-google {
+    background: orange;
+    color: #fff;
+}
+
+/* Register Link */
+.register {
     display: flex;
     justify-content: center;
     margin-bottom: 10px;
+}
+
+.register a {
+    color: blue;
+    text-decoration: none;
+}
+
+.register a:hover {
+    text-decoration: underline;
+}
+.social-box a{
+    text-decoration: none;
+}
+/* Error Message */
+.error-message {
+    background: rgb(255, 77, 0);
+    color: white;
+    width: 90%;
+    height: 20px;
+    margin: 0 auto;
+    padding: 5px;
+}
+
+.error-message ul {
+    margin-bottom: 0px;
+    padding-left: 20px;
+}
+
+.error-message ul li {
+    list-style-type: none;
 }
