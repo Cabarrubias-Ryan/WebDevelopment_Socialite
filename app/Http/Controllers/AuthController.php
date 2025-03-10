@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logs;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
@@ -28,9 +29,10 @@ class AuthController extends Controller
         $result = User::insert($data);
 
         if($result){
-            return response()->json(['Error' => '0', 'Message' => 'You have successfully Register a Account.']);
+            return response()->json(['Error' => 0, 'Message' => 'You have successfully Register a Account.']);
+        }else{
+            return response()->json(['Error' => 1, 'Message' => 'Failed to Register a Account.']);
         }
-
     }
     public function login(Request $request){
 
@@ -46,11 +48,22 @@ class AuthController extends Controller
         $account = User::where('username', $request->username)->first();
 
         if (!$account || !Hash::check($request->password, $account->password)) {
-            return redirect()->back()->withErrors(['username' => 'Invalid credentials'])->withInput();
+            $data = [
+                'login_at' => now(),
+                'status' => 'Login Failed',
+            ];
+            Logs::insert($data);
+            return response()->json(['Error' => 1, 'Message' => 'Wrong Username or Password']);
         }
 
         Auth::login($account);
-        return redirect('/home')->with('login_success', 'You have successfully logged in.');
+        $data = [
+            'login_at' => now(),
+            'status' => 'Login Success',
+            'login_type' => 'Tradional Login'
+        ];
+        Logs::insert($data);
+        return response()->json(['Error' => 0, 'Message' => 'You have successfully Register a Account.']);
     }
     public function logout()
     {
@@ -92,7 +105,12 @@ class AuthController extends Controller
             ]);
             Auth::login($newUser);
         }
-
+        $data = [
+            'login_at' => now(),
+            'status' => 'Login Success',
+            'login_type' => $provider,
+        ];
+        Logs::insert($data);
         // Redirect the user to the dashboard or any other secure page
         return redirect('/home')->with('login_success', 'You have successfully logged in.');
     }

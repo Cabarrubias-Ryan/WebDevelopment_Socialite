@@ -7,8 +7,8 @@
     <title>Home</title>
 </head>
 <body>
-    <main style="display: flex; justify-content: center;">
-        <div style="background: green; color: white; width: 100%; height: 80px;">
+    <main style="display: flex; justify-content: center; align-items: center; background: #fff;">
+        <div>
             <h1>Hello, World</h1>
             <span><a href="{{ route('logout.auth.process')}}">Logout</a></span>
         </div>

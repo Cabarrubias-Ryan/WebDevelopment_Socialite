@@ -6,14 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Login</title>
 </head>
 <body>
     <main class="container">
         <section class="box">
-            <form action="{{ route('login.auth.process') }}" method="post">
-                <div class="title">
-                    <h1>Login</h1>
+            <form id="formLogin">
+                <div class="title" style="display: flex; justify-content: center; margin-top: 10px;">
+                    <img src="{{ asset('images/logo.png')}}" alt="logo" style=" width: 100px; ">
                 </div>
                 <div>
                     @if ($errors->any())
@@ -30,7 +32,7 @@
                     @csrf
                     <input type="text" name="username" class="textbox_input" placeholder="Username">
                     <input type="password" name="password" class="textbox_input" placeholder="Password">
-                    <input type="submit" value="Submit" class="textbox_input">
+                    <button style="margin-top: 20px; width: 100%; height: 40px; background: blue; color: white; border-radius: 14px;" type="button" id="btnSave">Submit</button>
                 </div>
             </form>
             <div class="footer">
@@ -53,5 +55,35 @@
             </div>
         </section>
     </main>
+    <script>
+        $(document).ready(function() {
+            $('#btnSave').on('click', function() {
+                $.ajax({
+                    type: "POST",
+                    url: "/login",
+                    cache: false,
+                    data: $('#formLogin').serialize(),
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.Error == 1){
+                            Swal.fire({
+                            title: 'Error',
+                            icon: "error",
+                            text: data.Message,
+                            }).then(result => {
+                                location.reload();
+                            });
+                        }
+                        else if(data.Error == 0){
+                            window.location.href = '{{ url('/home')}}';
+                        }
+                    },
+                    error: function() {
+                        alert('Error');
+                    }
+                })
+            } )
+        })
+    </script>
 </body>
 </html>

@@ -19,13 +19,13 @@
                 </div>
                 <div class="textbox">
                     @csrf
-                    <input type="text" name="username" class="textbox_input" placeholder="Username">
-                    <input type="password" name="password" class="textbox_input" placeholder="Password">
-                    <input type="email" name="email" class="textbox_input" placeholder="Email">
-                    <input type="text" name="firstname" class="textbox_input" placeholder="Firstname">
-                    <input type="text" name="middlename" class="textbox_input" placeholder="Middlename">
-                    <input type="text" name="lastname" class="textbox_input" placeholder="Lastname">
-                    <button style="margin-top: 20px; width: 100%; height: 40px; background: blue; color: white; border-radius: 14px;" type="submit" id="btnSave">Submit</button>
+                    <input type="text" name="username" class="textbox_input" placeholder="Username" required>
+                    <input type="password" name="password" class="textbox_input" placeholder="Password" required>
+                    <input type="email" name="email" class="textbox_input" placeholder="Email" required>
+                    <input type="text" name="firstname" class="textbox_input" placeholder="Firstname" required>
+                    <input type="text" name="middlename" class="textbox_input" placeholder="Middlename" required>
+                    <input type="text" name="lastname" class="textbox_input" placeholder="Lastname" required>
+                    <button style="margin-top: 20px; width: 100%; height: 40px; background: blue; color: white; border-radius: 14px;" type="button" id="btnSave">Submit</button>
                 </div>
             </form>
             <div class="register">
@@ -34,25 +34,38 @@
         </section>
     </main>
     <script>
-
         $(document).ready(function() {
             $('#btnSave').on('click', function() {
+
+                e.defaultPrevented();
+
                 $.ajax({
-                    url: "/register/add",
                     type: "POST",
+                    url: "/register/add",
+                    cache: false,
                     data: $('#formData').serialize(),
                     dataType: "json",
                     success: function(data) {
-                        Swal.fire({
-                            title: data.Message,
+                        if(data.Error == 1){
+                            Swal.fire({
+                            title: 'Error',
+                            icon: "error",
+                            text: data.Message,
+                            }).then(result => {
+                                location.reload();
+                            });
+                        }
+                        else if(data.Error == 0){
+                            Swal.fire({
+                            title: 'Saved',
                             icon: "success",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "/login";
-                            }
-                        })
+                            text: data.Message,
+                            }).then(result => {
+                                window.location.href = '{{ url('/')}}';
+                            });
+                        }
                     },
-                    error: function(error) {
+                    error: function() {
                         alert('Error');
                     }
                 })
